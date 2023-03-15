@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+  root 'static_pages#home'
   resources :products
   get 'demo_partials/new'
   get 'demo_partials/edit'
   get 'static_pages/home'
   get 'static_pages/help'
+
+  get '/signup', to: "users#new"
+  post '/signup', to: "users#create"
+  resources :users, only: :show
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
