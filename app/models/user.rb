@@ -10,26 +10,20 @@ class User < ApplicationRecord
     validates :password, presence: true, length: {minimum: 6}, allow_nil: true
     
     has_secure_password
-    attr_accessor :remember_token, :activation_token
+    attr_accessor :remember_token, :activation_token, :reset_token
+
+    def password_reset_expired?
+        reset_sent_at < 2.hours.ago
+    end
+
+    def create_reset_digest
+        self.reset_token = User.new_token
+        update_columns reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now
+    end
     
-    # before_save :test_callback_before_save
-    # around_save :test_callback_around_save
-    # after_save :test_callback_after_save
-
-    # def test_callback_before_save
-    #     puts "before save"
-    # end
-
-    # def test_callback_around_save
-    #     puts "in around save"
-    #     yield # User saved
-    #     puts "out around save"
-    # end
-
-    # def test_callback_after_save
-    #     # puts "after save"
-    #     raise "raise exception"
-    # end
+    def send_password_reset_email
+        UserMailer.password_reset(self).deliver_now
+    end
     
     
     class << self
