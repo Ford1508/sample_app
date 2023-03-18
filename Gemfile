@@ -31,6 +31,9 @@ gem "bootstrap-sass", "3.4.1"
 gem "bcrypt", "~> 3.1.7"
 gem "faker", :git => "https://github.com/faker-ruby/faker.git", :branch => "main"
 gem "pagy"
+gem "image_processing", "1.9.3"
+gem "mini_magick", "4.9.5"
+gem "active_storage_validations", "0.8.2"
 
 
 group :development, :test do
